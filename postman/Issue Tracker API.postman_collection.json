@@ -1,0 +1,50 @@
+{
+  "info": {
+    "_postman_id": "12345678-1234-1234-1234-1234567890ab",
+    "name": "Issue Tracker API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        { "name": "Register", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "register"] } } },
+        { "name": "Login", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "login"] } } },
+        { "name": "Current User", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/auth/me", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "me"] } } }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        { "name": "Get Projects", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/projects", "host": ["{{baseUrl}}"], "path": ["api", "v1", "projects"] } } },
+        { "name": "Create Project", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/projects", "host": ["{{baseUrl}}"], "path": ["api", "v1", "projects"] } } }
+      ]
+    },
+    {
+      "name": "Issues",
+      "item": [
+        { "name": "Get Issues", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/issues", "host": ["{{baseUrl}}"], "path": ["api", "v1", "issues"] } } },
+        { "name": "Create Issue", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/issues", "host": ["{{baseUrl}}"], "path": ["api", "v1", "issues"] } } }
+      ]
+    },
+    {
+      "name": "Labels",
+      "item": [
+        { "name": "Get Labels", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/labels", "host": ["{{baseUrl}}"], "path": ["api", "v1", "labels"] } } }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        { "name": "Get Users", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/users", "host": ["{{baseUrl}}"], "path": ["api", "v1", "users"] } } }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ]
+}

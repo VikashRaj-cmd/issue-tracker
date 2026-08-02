@@ -1,121 +1,21 @@
-# StackForge — Frontend
+# MEAN Issue Tracker Frontend
 
-Angular 21 frontend for the **StackForge — Full-Stack Issue Tracking Platform** with Server-Side Rendering (SSR).
+This is the frontend for the MEAN Issue Tracker application, built with Angular and Angular Material.
 
----
+## Features
+- Secure Login & Registration
+- Dashboard Analytics
+- Kanban Board for Issues
+- Project & Issue Management
+- User & Label Configuration
+- Dark/Light Theme Support
+- Fully Responsive UI
 
-## Tech Stack
+## Setup
+1. `npm install`
+2. `ng serve` (Development server will run on `http://localhost:4200/`)
 
-| Layer      | Technology         |
-|------------|--------------------|
-| Framework  | Angular 21 (SSR)   |
-| Language   | TypeScript         |
-| Styling    | CSS                |
-| Testing    | Vitest             |
-
----
-
-## Project Structure
-
-```txt
-frontend/
-├── src/
-│   ├── app/
-│   │   ├── core/
-│   │   │   ├── guards/           # Route guards (auth)
-│   │   │   ├── interceptors/     # HTTP interceptors (JWT token)
-│   │   │   ├── models/           # TypeScript interfaces
-│   │   │   └── services/         # API services
-│   │   ├── features/
-│   │   │   ├── auth/             # Login, Register
-│   │   │   ├── dashboard/        # Dashboard
-│   │   │   ├── issues/           # Issue list, detail, create
-│   │   │   ├── projects/         # Project list, detail, create
-│   │   │   ├── comments/         # Threaded comments
-│   │   │   ├── labels/           # Labels management
-│   │   │   └── users/            # User profile, list
-│   │   ├── layout/               # Shell, navbar, sidebar
-│   │   ├── shared/
-│   │   │   └── components/       # Reusable UI components
-│   │   ├── app.ts
-│   │   ├── app.routes.ts
-│   │   └── app.config.ts
-│   ├── index.html
-│   ├── main.ts
-│   ├── main.server.ts
-│   └── styles.css
-├── angular.json
-├── tsconfig.json
-└── package.json
-```
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js v18+
-- Angular CLI v21
-
-```bash
-npm install -g @angular/cli
-```
-
-### Installation
-
-```bash
-cd frontend
-npm install
-```
-
-### Run
-
-```bash
-# Development
-ng serve -o
-
-# SSR Development
-ng serve
-
-# Production Build
-ng build
-```
-
-URL: `http://localhost:4200`
-
----
-
-## Implementation Stages
-
-| Stage | Description                      | Status |
-|-------|----------------------------------|--------|
-| F01   | Initialize Angular Project       | ✅     |
-| F02   | Routing & Layout Setup           | ⏳     |
-| F03   | Auth Module (Login / Register)   | ⏳     |
-| F04   | HTTP Interceptor & Auth Guard    | ⏳     |
-| F05   | Dashboard                        | ⏳     |
-| F06   | Projects Module                  | ⏳     |
-| F07   | Issues Module                    | ⏳     |
-| F08   | Comments Module                  | ⏳     |
-| F09   | Labels Module                    | ⏳     |
-| F10   | Users Module                     | ⏳     |
-
----
-
-## Backend
-
-The backend API runs at `http://localhost:5000`. See [backend README](../backend/README.md) for setup.
-
----
-
-## Author
-
-**Vikash Rajput**
-[GitHub](https://github.com/VikashRaj-cmd)
-
----
-
-## License
-
-ISC
+## Production Build
+1. Update `src/environments/environment.prod.ts` with your backend URL.
+2. Run `ng build --configuration production`
+3. The build artifacts will be stored in the `dist/` directory.

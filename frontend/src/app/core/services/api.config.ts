@@ -7,4 +7,6 @@
  * If backend URL changes, update only this file.
  */
 
-export const API_BASE_URL = 'http://localhost:5000/api/v1';
+import { environment } from '../../../environments/environment';
+
+export const API_BASE_URL = environment.apiUrl;
