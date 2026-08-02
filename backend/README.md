@@ -1,341 +1,115 @@
 # StackForge — Backend
 
-A production-style **Full-Stack Issue Tracking Platform** backend built with **Node.js, Express.js, MongoDB, and Mongoose** — inspired by systems like GitHub Issues, Jira, and Linear.
+The Node.js and Express.js REST API for the **StackForge** Issue Tracking Platform. This backend is designed with enterprise-grade patterns, focusing on robust security, clean architecture, and exhaustive API endpoints.
 
 ---
 
-## Tech Stack
+## ✨ Backend Features
 
-| Layer            | Technology                                          |
-|------------------|-----------------------------------------------------|
-| Runtime          | Node.js                                             |
-| Framework        | Express.js v5                                       |
-| Database         | MongoDB Atlas + Mongoose                            |
-| Auth             | JSON Web Token (jsonwebtoken)                       |
-| Password Hashing | bcryptjs                                            |
-| Security         | helmet, express-rate-limit, express-mongo-sanitize  |
-| Validation       | express-validator                                   |
-| Logging          | winston                                             |
-| Dev Tools        | nodemon                                             |
+- **Authentication & Security**: JWT-based auth, bcrypt password hashing, Express Rate Limiter, Helmet headers, and Mongo query sanitization.
+- **Role-based Access Control**: Granular authorization middleware to restrict routes based on user roles (Admin vs User) and project membership.
+- **RESTful API Design**: Clean, structured, and versioned routes (`/api/v1/...`).
+- **Advanced Querying**: Built-in support for filtering, sorting, field limiting, and pagination across major collections.
+- **Validation**: Strict input validation and sanitization using `express-validator`.
+- **Centralized Error Handling**: A unified error handling pipeline catching async errors, MongoDB validation errors, and custom AppErrors.
+- **Logging**: Structured JSON application logging and request tracing powered by `winston`.
 
 ---
 
-## Features
+## 🛠️ Tech Stack & Architecture
 
-- User registration, login, and profile API
-- JWT-based authentication with protected routes
-- Role-based access control (admin / member)
-- Project CRUD with member management
-- Issue CRUD with status updates, assignment, and activity history
-- Threaded comment system
-- Project-specific labels
-- Input validation on all endpoints
-- Centralized error handling with custom `AppError` class
-- Request ID and request logging middleware
-- MongoDB injection protection
-- Global and per-route rate limiting
-- Structured JSON logging with Winston
-- Pagination and multi-field filtering
-- Graceful shutdown handling
-- Environment validation on startup
-- Database seed script
+- **Runtime**: Node.js (v18+)
+- **Framework**: Express.js v5
+- **Database**: MongoDB Atlas + Mongoose ODM
+- **Architecture**: MVC pattern (Models, Controllers, Routes, Middlewares).
 
 ---
 
-## Project Structure
+## 📂 Folder Structure
 
 ```txt
-stackforge/
-├── config/
-│   ├── config.js
-│   ├── database.js
-│   └── logger.js
-├── controllers/
-│   ├── authController.js
-│   ├── userController.js
-│   ├── projectController.js
-│   ├── issueController.js
-│   ├── commentController.js
-│   ├── labelController.js
-│   └── activityController.js
-├── middlewares/
-│   ├── protect.js
-│   ├── restrictTo.js
-│   ├── validate.js
-│   ├── errorHandler.js
-│   ├── requestId.js
-│   ├── requestLogger.js
-│   └── sanitise.js
-├── models/
-│   ├── User.js
-│   ├── Project.js
-│   ├── Issue.js
-│   ├── Comment.js
-│   ├── Label.js
-│   └── ActivityLog.js
-├── routes/
-│   ├── authRoutes.js
-│   ├── userRoutes.js
-│   ├── projectRoutes.js
-│   ├── issueRoutes.js
-│   ├── commentRoutes.js
-│   ├── labelRoutes.js
-│   └── healthRoutes.js
-├── utils/
-│   ├── AppError.js
-│   ├── catchAsync.js
-│   ├── queryHelper.js
-│   ├── generateToken.js
-│   └── validateEnv.js
-├── validators/
-│   ├── authValidator.js
-│   ├── projectValidator.js
-│   ├── issueValidator.js
-│   ├── commentValidator.js
-│   └── labelValidator.js
-├── scripts/
-│   └── seed.js
-├── postman/
-│   ├── Issue Tracker API.postman_collection.json
-│   └── Issue Tracker Local.postman_environment.json
-├── logs/
-├── .env.example
-├── .gitignore
-├── app.js
-├── server.js
-└── package.json
+backend/
+├── config/               # Database connection and Logger configurations
+├── controllers/          # Business logic and request handling
+├── middleware/           # Auth (protect/restrictTo), Error handling, Validation
+├── models/               # Mongoose schemas (User, Project, Issue, Label, Activity)
+├── routes/               # Express routing definitions
+├── utils/                # Helpers (AppError, catchAsync, Token generators)
+├── validators/           # express-validator schemas
+├── scripts/              # DB seeders and utility scripts
+├── logs/                 # Winston output logs
+├── app.js                # Express app initialization
+├── server.js             # Server startup and graceful shutdown
+└── .env.example          # Environment variable template
 ```
 
 ---
 
-## Getting Started
+## ⚙️ Installation & Development Setup
 
-### Prerequisites
-
+### 1. Prerequisites
 - Node.js v18+
-- MongoDB Atlas account
+- MongoDB instance (Local or Atlas)
 
-### Installation
-
+### 2. Install Dependencies
 ```bash
-git clone https://github.com/VikashRaj-cmd/stackforge.git
-cd stackforge
+cd backend
 npm install
 ```
 
-### Environment Variables
-
-Create a `.env` file in the root directory:
-
+### 3. Environment Variables
+Create a `.env` file in the root of the `backend` directory. Use `.env.example` as a template:
 ```env
 PORT=5000
 NODE_ENV=development
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
+MONGODB_URI=mongodb://localhost:27017/stackforge
+JWT_SECRET=your_super_secret_jwt_key
+JWT_EXPIRES_IN=7d
+CLIENT_URL=http://localhost:4200
 ```
 
-### Run
-
+### 4. Database Seeding (Optional)
+To populate your database with initial labels and test data:
 ```bash
-# Development
+npm run seed
+```
+
+### 5. Start the Server
+```bash
+# Development (with nodemon)
 npm run dev
 
 # Production
 npm start
-
-# Seed database
-npm run seed
 ```
+The server will run at `http://localhost:5000`.
 
 ---
 
-## API Reference
+## 🧪 Postman Testing
 
-### Base URL
+A complete Postman collection is provided in the root `postman/` directory: `Issue Tracker API.postman_collection.json`.
 
-```
-/api/v1
-```
-
-### Health Check
-
-```
-GET /api/health
-```
-
-### Auth
-
-```
-POST /api/v1/auth/register
-POST /api/v1/auth/login
-```
-
-### Users
-
-```
-GET    /api/v1/users
-GET    /api/v1/users/:id
-```
-
-### Projects
-
-```
-GET    /api/v1/projects
-POST   /api/v1/projects
-GET    /api/v1/projects/:id
-PUT    /api/v1/projects/:id
-DELETE /api/v1/projects/:id
-```
-
-### Issues
-
-```
-GET    /api/v1/issues
-POST   /api/v1/issues
-GET    /api/v1/issues/:id
-PUT    /api/v1/issues/:id
-DELETE /api/v1/issues/:id
-```
-
-### Comments
-
-```
-POST   /api/v1/issues/:issueId/comments
-GET    /api/v1/issues/:issueId/comments
-```
-
-### Labels
-
-```
-GET    /api/v1/projects/:projectId/labels
-POST   /api/v1/projects/:projectId/labels
-```
-
-> Protected routes require a JWT token in the `Authorization` header:
->
-> ```
-> Authorization: Bearer <token>
-> ```
+1. Import the collection into Postman.
+2. Set up an environment variable `baseUrl` to `http://localhost:5000`.
+3. Register and Login a user.
+4. Set the returned JWT token as a Bearer Token in your Postman collection authorization settings.
+5. You can now test all protected routes (Projects, Issues, Labels, Users).
 
 ---
 
-## Implementation Stages
+## ✅ API Checklist
 
-| Stage | Description                       | Status |
-|-------|-----------------------------------|--------|
-| 01    | Project Initialisation            | ✅     |
-| 02    | Server Setup                      | ✅     |
-| 03    | Database Connection               | ✅     |
-| 04    | Domain & Data Modelling           | ✅     |
-| 05    | Schema Design                     | ✅     |
-| 06    | Database Seed Setup               | ✅     |
-| 07    | Route Structure                   | ✅     |
-| 08    | Auth & User APIs                  | ✅     |
-| 09    | Project APIs                      | ✅     |
-| 10    | Issue APIs                        | ✅     |
-| 11    | Comment & Label APIs              | ✅     |
-| 12    | Input Validation                  | ✅     |
-| 13    | Custom Error Class                | ✅     |
-| 14    | Centralised Error Handling        | ✅     |
-| 15    | JWT Authentication                | ✅     |
-| 16    | Authorisation & Route Protection  | ✅     |
-| 17    | Middleware Layer                  | ✅     |
-| 18    | Pagination & Filtering            | ✅     |
-| 19    | Logging, Security & Performance   | ✅     |
-| 20    | Production Readiness              | ✅     |
-| 21    | Postman Collection Complete       | ✅     |
-| 22    | GitHub Production Ready           | ✅     |
+| Resource | Endpoints | Status |
+|---|---|---|
+| **Auth** | `POST /register`, `POST /login`, `GET /me` | ✅ Complete |
+| **Projects** | `GET /`, `POST /`, `PUT /:id`, `DELETE /:id`, `POST /members` | ✅ Complete |
+| **Issues** | `GET /`, `POST /`, `PUT /:id`, `DELETE /:id`, `POST /assign` | ✅ Complete |
+| **Labels** | `GET /`, `POST /`, `PUT /:id`, `DELETE /:id` | ✅ Complete |
+| **Users** | `GET /`, `GET /:id` | ✅ Complete |
+| **Activity** | `GET /logs` | ✅ Complete |
 
 ---
 
-## Security
-
-- HTTP security headers via `helmet`
-- MongoDB injection protection via `express-mongo-sanitize`
-- Global rate limit: 200 requests / 15 min
-- Auth rate limit: 10 requests / 15 min
-- Request body size limit: 50kb
-- JWT token expiry enforced
-
----
-
-## Logging
-
-Structured JSON logging via Winston:
-
-- `logs/combined.log` — all logs
-- `logs/error.log` — error-level logs only
-- Console output in development
-
----
-
-## 🧪 Comprehensive Postman Testing
-
-### Import Files
-
-1. **Environment**: `postman/StackForge Local.postman_environment.json`
-2. **Collection**: `postman/StackForge API.postman_collection.json`
-
-### Setup Steps
-
-1. Import both files into Postman
-2. Select **StackForge Local** environment
-3. Run **Auth → Login User** first (auto-saves token)
-4. Follow sequence: Auth → Projects → Users → Issues → Comments → Labels → Validation Tests
-
-### Environment Variables Auto-Populated
-- `token` - from login response
-- `projectId` - from create project
-- `userId`, `issueId`, `commentId`, `labelId` - auto-captured
-
-### Test Sequence (Recommended Order)
-
-```
-1. Auth → Register User ✓
-2. Auth → Login User → 📝 Copy token  
-3. Projects → Create Project → 📝 Copy projectId
-4. Users → Get All Users → 📝 Copy userId  
-5. Issues → Create Issue → 📝 Copy issueId
-6. Comments → Add Comment → 📝 Copy commentId
-7. Labels → Create Label → 📝 Copy labelId
-8. Test all GET/PATCH/DELETE endpoints
-9. Run Validation Tests folder
-```
-
-### Features Included
-- ✅ 50+ API endpoints organized in 7 folders
-- ✅ Auto token capture from login  
-- ✅ Auto ID capture (project/user/issue/comment/label)
-- ✅ Built-in tests for status codes
-- ✅ Example bodies for all POST/PATCH
-- ✅ Query params for filtering/search/pagination
-- ✅ Invalid input validation tests
-- ✅ Bearer auth pre-configured
-
-### Headers (Auto-set)
-```
-Authorization: Bearer {{token}}
-Content-Type: application/json
-```
-
----
-
-## Previous Postman Info (Legacy)
-
-Import the collection from `postman/StackForge-API.postman_collection.json` into Postman.
-
-- **Auth** — Register and login to get a JWT token
-- **Protected** — Use the JWT token in the `Authorization` header to access protected routes
-
----
-
-## Author
-
-**Vikash Rajput**
-[GitHub](https://github.com/VikashRaj-cmd)
-
----
-
-## License
-
-ISC
+## 👨‍💻 Author
+**Vikash Rajput** - [GitHub](https://github.com/VikashRaj-cmd)
